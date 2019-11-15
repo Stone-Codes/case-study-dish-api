@@ -7,7 +7,7 @@ from rest_framework import status
 from api.models import Dish
 from api.serializers import DishSerializer
 
-DISH_URL = reverse('dish:dish-list')
+DISH_URL = reverse('api:dish-list')
 
 def sample_dishes():
     Dish.objects.create(name="Schnitzel",price=10.50)
@@ -49,7 +49,7 @@ class DishApiTests(TestCase):
         """Test for filtering dishes by name descending"""
         sample_dishes()
 
-        res = self.client.get(DISH_URL, {'sort', '-name'})
+        res = self.client.get(DISH_URL, {'sort': '-name'})
 
         dishes = Dish.objects.all().order_by('-name')
         serializer = DishSerializer(dishes, many=True)
@@ -61,7 +61,7 @@ class DishApiTests(TestCase):
         """Test for filtering dishes by price ascending"""
         sample_dishes()
 
-        res = self.client.get(DISH_URL, {'sort', 'price'})
+        res = self.client.get(DISH_URL, {'sort': 'price'})
 
         dishes = Dish.objects.all().order_by('price')
         serializer = DishSerializer(dishes, many=True)
