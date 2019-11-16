@@ -9,4 +9,4 @@ COPY yarn.lock /app/yarn.lock
 RUN yarn install
 
 COPY ./src /app/src
-COPY ./public /public
+COPY ./public /app/public
