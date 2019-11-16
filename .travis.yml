@@ -11,3 +11,6 @@ jobs:
   include:
     - stage: "Test-Backend"
       script: docker-compose run backend sh -c "python manage.py test"
+
+    - stage: "Test-Frontend"
+      script: docker-compose run frontend sh -c "CI=true"
