@@ -13,6 +13,4 @@ jobs:
       script: docker-compose run backend sh -c "python manage.py test"
 
     - stage: "Test-Frontend"
-    - language: node_js
-      node_js: 12    
-      cript: docker-compose run frontend sh -c "CI=true yarn test"
+      script: docker-compose run frontend sh -c "CI=true yarn test"
