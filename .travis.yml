@@ -1,28 +1,18 @@
-matrix:
+language: python
+python:
+  - "3.7"
+
+services:
+  - docker
+
+before_script: pip install docker-compose
+
+jobs:
   include:
-    - language: python
-      python:
-        - "3.7"
+    - stage: "Test-Backend"
+      script: docker-compose run backend sh -c "python manage.py test"
 
-      services:
-        - docker
-      before_script: pip install docker-compose
-      jobs:
-        include:
-          - stage: "Test-Backend"
-            script: docker-compose run backend sh -c "python manage.py test"
-          
+    - stage: "Test-Frontend"
     - language: node_js
-      node_js:
-        - 12
-
-      services:
-        - docker
-
-      jobs:
-        include:
-          - stage: "Test-Frontend"
-            script: docker-compose run frontend sh -c "CI=true"
-      
-
-      
+      node_js: 12    
+      cript: docker-compose run frontend sh -c "CI=true yarn test"
