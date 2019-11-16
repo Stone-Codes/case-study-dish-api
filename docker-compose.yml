@@ -12,3 +12,11 @@ services:
       sh -c "python manage.py migrate && 
              python manage.py runserver 0.0.0.0:8000"
 
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    command: sh -c "yarn start"
