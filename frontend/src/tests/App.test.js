@@ -28,8 +28,8 @@ describe('Test for the dish table', () => {
         const headings = wrapper.find('th')
 
         expect(headings).toHaveLength(2)
-        expect(headings.at(0)).toBe('Dish')
-        expect(headings.at(1)).toBe('Price')
+        expect(headings.at(0).text()).toBe('Dish')
+        expect(headings.at(1).text()).toBe('Price')
     })
 
     test('that the table has a body', () => {
