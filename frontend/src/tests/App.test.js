@@ -5,7 +5,7 @@ import axios from 'axios'
 import waitForExpect from 'wait-for-expect'
 import { act } from 'react-dom/test-utils'
 
-import App from '../App'
+import App from '../components/App/App'
 
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
