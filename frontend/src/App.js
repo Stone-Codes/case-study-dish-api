@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import './App.css';
+
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -9,9 +10,13 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Button from 'react-bootstrap/Button'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
+
 function App() {
 
   const [dishes, setDishes] = useState([])
+  const [sorting, setSorting] = useState(null)
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/dishes`)
@@ -21,6 +26,28 @@ function App() {
       console.log(e)
     })
   }, [])
+
+  const handleSort = (sortBy) => {
+    if(sortBy === 'name') {
+      if(sorting === 'name') setSorting('-name')
+      else setSorting('name')
+    } else {
+      if(sorting === 'price') setSorting('-price')
+      else setSorting('price')
+    }
+  }
+
+  const selectSortIcon = (sortColumn) => {
+    if(sortColumn === 'name') {
+      if(sorting === 'name') return faSortUp
+      if(sorting === '-name') return faSortDown
+      else return faSort
+    } else {
+      if(sorting === 'price') return faSortUp
+      if(sorting === '-price') return faSortDown
+      else return faSort
+    }
+  }
 
   return (
     <Container>
@@ -39,8 +66,8 @@ function App() {
           <Table striped bordered>
             <thead>
               <tr>
-                <th>Dish</th>
-                <th>Price</th>
+                <th onClick={() => handleSort('name')} className="sortable-header">Dish <FontAwesomeIcon icon={selectSortIcon('name')} /></th>
+                <th onClick={() => handleSort('price')} className="sortable-header">Price <FontAwesomeIcon icon={selectSortIcon('price')} /></th>
               </tr>
             </thead>
             <tbody>
