@@ -14,6 +14,9 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Button from 'react-bootstrap/Button'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
+
 Enzyme.configure({ adapter :new Adapter() })
 const {shallow, mount} = Enzyme
 
@@ -86,8 +89,8 @@ describe('Table', () => {
 
         const headings = headerRow.find('th')
         expect(headings).toHaveLength(2)
-        expect(headings.at(0).text()).toBe('Dish')
-        expect(headings.at(1).text()).toBe('Price')
+        expect(headings.at(0).text()).toBe('Dish <FontAwesomeIcon />')
+        expect(headings.at(1).text()).toBe('Price <FontAwesomeIcon />')
     })
 
     it('should render a table body', () =>{
@@ -129,3 +132,71 @@ describe('Api related tests', () => {
         })                           
     })
 }) 
+
+describe('Test sorting', () => {
+    it('should set the correct sort icon for dish name header', () => {
+        const wrapper = shallow(<App />)
+
+        const nameHeader = wrapper.find('th').at(0) 
+        const icon = nameHeader.find(FontAwesomeIcon)
+        
+        expect(icon.prop('icon')).toBe(faSort)
+        nameHeader.simulate('click')
+        waitForExpect(() => {
+            expect(icon.prop('icon')).toBe(faSortUp)
+        })
+        nameHeader.simulate('click')
+        waitForExpect(() => {
+            expect(icon.prop('icon')).toBe(faSortDown)
+        })        
+    })
+
+    it('should set the correct sort icon for price header', () => {
+        const wrapper = shallow(<App />)
+
+        const priceHeader = wrapper.find('th').at(1) 
+        const icon = priceHeader.find(FontAwesomeIcon)
+        
+        expect(icon.prop('icon')).toBe(faSort)
+        priceHeader.simulate('click')
+        waitForExpect(() => {
+            expect(icon.prop('icon')).toBe(faSortUp)
+        })
+        priceHeader.simulate('click')
+        waitForExpect(() => {
+            expect(icon.prop('icon')).toBe(faSortDown)
+        }) 
+    })
+
+    it('should call the correct url with axios for sorting by name', async () => {
+        axios.get.mockResolvedValue({data: []})
+        const wrapper = mount(<App />)
+
+        const nameHeader = wrapper.find('th').at(0) 
+        
+        await act(async() => {
+            nameHeader.simulate('click')
+        })
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=name`)
+        await act(async() => {
+            nameHeader.simulate('click')
+        })
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-name`)
+    })
+
+    it('should call the correct url with axios for sorting by price', async () => {
+        axios.get.mockResolvedValue({data: []})
+        const wrapper = mount(<App />)
+
+        const priceHeader = wrapper.find('th').at(1) 
+        
+        await act(async() => {
+            priceHeader.simulate('click')
+        })
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=price`)
+        await act(async() => {
+            priceHeader.simulate('click')
+        })
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-price`)
+    })
+})

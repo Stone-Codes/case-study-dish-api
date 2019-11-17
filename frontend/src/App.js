@@ -16,25 +16,19 @@ import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 function App() {
 
   const [dishes, setDishes] = useState([])
-  const [sorting, setSorting] = useState(null)
+  const [sorting, setSorting] = useState('')
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/api/dishes`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=${sorting}`)
     .then(response => {
       setDishes(response.data)
     }).catch(e => {
       console.log(e)
     })
-  }, [])
+  }, [sorting])
 
   const handleSort = (sortBy) => {
-    if(sortBy === 'name') {
-      if(sorting === 'name') setSorting('-name')
-      else setSorting('name')
-    } else {
-      if(sorting === 'price') setSorting('-price')
-      else setSorting('price')
-    }
+    sortBy === sorting ? setSorting(`-${sortBy}`) : setSorting(sortBy)
   }
 
   const selectSortIcon = (sortColumn) => {
