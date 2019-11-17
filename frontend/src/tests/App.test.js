@@ -8,6 +8,8 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Table from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
+import Button from 'react-bootstrap/Button'
 
 Enzyme.configure({ adapter :new Adapter() })
 const {shallow} = Enzyme
@@ -28,7 +30,32 @@ describe('Basic layout', () => {
         const container = wrapper.find(Container)
         expect(container.find(Row)).toHaveLength(1)
     })
+})
 
+describe('Search Form', () => {
+    it('should render a form with input and button', () => {
+        const wrapper = shallow(<App />)
+        const form = wrapper.find(Form)
+        const formGroup = form.find(Form.Group)        
+
+        expect(formGroup).toHaveLength(1)
+
+        const inputGroup = formGroup.find(InputGroup)
+        expect(inputGroup).toHaveLength(1)
+
+        const input = inputGroup.find(Form.Control)
+        expect(input).toHaveLength(1)
+        expect(input.prop('type')).toBe('text')
+        expect(input.prop('placeholder')).toBe('Dish name')
+
+        const inputGroupAppend = inputGroup.find(InputGroup.Append)
+        expect(inputGroupAppend).toHaveLength(1)
+        
+        const button = inputGroupAppend.find(Button)
+        expect(button).toHaveLength(1)
+        expect(button.prop('type')).toBe('submit')
+
+    })
 })
 
 describe('Table', () => {
