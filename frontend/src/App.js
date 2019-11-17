@@ -17,15 +17,17 @@ function App() {
 
   const [dishes, setDishes] = useState([])
   const [sorting, setSorting] = useState('')
+  const [searchValue, setSearchValue] = useState('')
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=${sorting}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=${sorting}&search=${search}`)
     .then(response => {
       setDishes(response.data)
     }).catch(e => {
       console.log(e)
     })
-  }, [sorting])
+  }, [sorting, search])
 
   const handleSort = (sortBy) => {
     sortBy === sorting ? setSorting(`-${sortBy}`) : setSorting(sortBy)
@@ -43,12 +45,21 @@ function App() {
     }
   }
 
+  const handleSearchChange = e => {
+    setSearchValue(e.target.value)
+  }
+
+  const handleSearch = e => {
+    e.preventDefault()
+    setSearch(searchValue)
+  }
+
   return (
     <Container>
-      <Form className="mt-3">
+      <Form className="mt-3" onSubmit={handleSearch}>
         <Form.Group as={Row} >
           <InputGroup as={Col} md={{span: 6}} lg={{span: 4}}>
-            <Form.Control type="text" placeholder="Dish name"/>
+            <Form.Control value={searchValue} onChange={handleSearchChange} type="text" placeholder="Dish name"/>
             <InputGroup.Append>
               <Button type="submit">Search</Button>
             </InputGroup.Append>

@@ -99,7 +99,7 @@ describe('Table', () => {
     })
 })
 
-describe('Api related tests', () => {
+describe('Fetching dishes', () => {
     it('should fetch all dishes when component rendered', async () => {
         const dishes = [{id:1, name: 'Schnitzel', price: 10.50}, {id:2,name: 'Spaghetti', price:5.99}]
         const response = {data: dishes}
@@ -177,11 +177,11 @@ describe('Test sorting', () => {
         await act(async() => {
             nameHeader.simulate('click')
         })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=name`)
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=name&search=`)
         await act(async() => {
             nameHeader.simulate('click')
         })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-name`)
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-name&search=`)
     })
 
     it('should call the correct url with axios for sorting by price', async () => {
@@ -193,10 +193,28 @@ describe('Test sorting', () => {
         await act(async() => {
             priceHeader.simulate('click')
         })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=price`)
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=price&search=`)
         await act(async() => {
             priceHeader.simulate('click')
         })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-price`)
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-price&search=`)
+    })
+})
+
+describe('Test searching', () => {
+    it('should call the correct url with axios for searching', async () => {
+        axios.get.mockResolvedValue({data: []})
+        let wrapper = mount(<App />)
+
+        const form = wrapper.find(Form)
+
+        const input = wrapper.find('input')
+        input.simulate('change', {target: {value: 'testsearch'}})
+
+        await act(async () => {
+            form.simulate('submit')
+        })
+
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=&search=testsearch`)    
     })
 })
