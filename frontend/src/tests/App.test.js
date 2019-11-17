@@ -7,6 +7,7 @@ import App from '../App'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Table from 'react-bootstrap/Table'
+import Form from 'react-bootstrap/Form'
 
 Enzyme.configure({ adapter :new Adapter() })
 const {shallow, mount} = Enzyme
@@ -17,10 +18,15 @@ describe('Basic layout', () => {
         expect(wrapper.find(Container)).toHaveLength(1)
     })
 
-    it('should render two rows in the container', () => {
+    it('should render a form in the container', () => {
+        const wrapper = shallow(<App />)
+        expect(wrapper.find(Form)).toHaveLength(1)
+    })
+
+    it('should render one row in the container', () => {
         const wrapper = shallow(<App />)
         const container = wrapper.find(Container)
-        expect(container.find(Row)).toHaveLength(2)
+        expect(container.find(Row)).toHaveLength(1)
     })
 
 })
@@ -52,5 +58,4 @@ describe('Table', () => {
         const wrapper = shallow(<App />)
         expect(wrapper.find(Table).find('tbody')).toHaveLength(1)
     })
-
 })
