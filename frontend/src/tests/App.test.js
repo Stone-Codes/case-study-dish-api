@@ -10,7 +10,7 @@ import Table from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
 
 Enzyme.configure({ adapter :new Adapter() })
-const {shallow, mount} = Enzyme
+const {shallow} = Enzyme
 
 describe('Basic layout', () => {
     it('should render a container', () => {
