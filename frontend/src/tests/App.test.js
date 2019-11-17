@@ -4,38 +4,53 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import App from '../App'
 
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Table from 'react-bootstrap/Table'
+
 Enzyme.configure({ adapter :new Adapter() })
 const {shallow, mount} = Enzyme
 
-describe('Test for the dish table', () => {
-    test('that there is a table', () => {
-        const wrapper = mount(<App />)
-        const table = wrapper.find('table')
+describe('Basic layout', () => {
+    it('should render a container', () => {
+        const wrapper = shallow(<App />)
+        expect(wrapper.find(Container)).toHaveLength(1)
+    })
+
+    it('should render two rows in the container', () => {
+        const wrapper = shallow(<App />)
+        const container = wrapper.find(Container)
+        expect(container.find(Row)).toHaveLength(2)
+    })
+
+})
+
+describe('Table', () => {
+    it('should render a table', () => {
+        const wrapper = shallow(<App />)
+        const table = wrapper.find(Table)
 
         expect(table).toHaveLength(1)
+    })
+
+    it('should render correct table headers', () => {
+        const wrapper = shallow(<App />)
+        const header = wrapper.find(Table).find('thead')
+
+        expect(header).toHaveLength(1)
         
-    })
+        const headerRow = header.find('tr')
+        expect(headerRow).toHaveLength(1)
 
-    test('that the table has a header', () => {
-        const wrapper = shallow(<App />)
-        const thead = wrapper.find('thead')
-
-        expect(thead).toHaveLength(1)
-    })
-
-    test('that the headings are present', () => {
-        const wrapper = shallow(<App />)
-        const headings = wrapper.find('th')
-
+        const headings = headerRow.find('th')
         expect(headings).toHaveLength(2)
         expect(headings.at(0).text()).toBe('Dish')
         expect(headings.at(1).text()).toBe('Price')
     })
 
-    test('that the table has a body', () => {
+    it('should render a table body', () =>{
         const wrapper = shallow(<App />)
-        const tbody = wrapper.find('tbody')
-
-        expect(tbody).toHaveLength(1)
+        expect(wrapper.find(Table).find('tbody')).toHaveLength(1)
     })
+
 })

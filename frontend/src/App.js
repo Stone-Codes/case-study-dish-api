@@ -19,7 +19,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              
+
             </tbody>
           </Table>
         </Col>
