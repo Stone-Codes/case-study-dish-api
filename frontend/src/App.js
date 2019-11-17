@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 import './App.css';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -9,6 +10,18 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Button from 'react-bootstrap/Button'
 
 function App() {
+
+  const [dishes, setDishes] = useState([])
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/dishes`)
+    .then(response => {
+      setDishes(response.data)
+    }).catch(e => {
+      console.log(e)
+    })
+  }, [])
+
   return (
     <Container>
       <Form className="mt-3">
@@ -31,6 +44,12 @@ function App() {
               </tr>
             </thead>
             <tbody>
+              {
+                dishes.map(dish => <tr key={dish.id}>
+                  <td>{dish.name}</td>
+                  <td>{dish.price}</td>
+                </tr>)
+              }
             </tbody>
           </Table>
         </Col>
