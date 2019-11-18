@@ -16,7 +16,7 @@ function App() {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=${sorting}&search=${search}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/dishes/?ordering=${sorting}&search=${search}`)
     .then(response => {
       setDishes(response.data)
     }).catch(e => {
