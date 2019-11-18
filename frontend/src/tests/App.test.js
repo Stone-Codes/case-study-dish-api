@@ -102,36 +102,15 @@ describe('Fetching dishes', () => {
 }) 
 
 describe('Test sorting', () => {
-    it('should call the correct url with axios for sorting by name', async () => {
+    it('should make an axios request with correct url query if sorting changes', async () => {
         axios.get.mockResolvedValue({data: []})
-        const wrapper = mount(<App />)
-
-        const nameHeader = wrapper.find('th').at(0) 
-        
-        await act(async() => {
-            nameHeader.simulate('click')
+        const sortBy = '-price'
+        await act(async () => {
+            const wrapper = mount(<App />)
+            const tableHeader = wrapper.find(TableHeader).at(0)
+            tableHeader.prop('handleSorting')(sortBy)
         })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=name&search=`)
-        await act(async() => {
-            nameHeader.simulate('click')
-        })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-name&search=`)
-    })
-
-    it('should call the correct url with axios for sorting by price', async () => {
-        axios.get.mockResolvedValue({data: []})
-        const wrapper = mount(<App />)
-
-        const priceHeader = wrapper.find('th').at(1) 
-        
-        await act(async() => {
-            priceHeader.simulate('click')
-        })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=price&search=`)
-        await act(async() => {
-            priceHeader.simulate('click')
-        })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=-price&search=`)
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=${sortBy}&search=`)
     })
 })
 
