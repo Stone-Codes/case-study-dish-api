@@ -11,8 +11,9 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Table from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
-import InputGroup from 'react-bootstrap/InputGroup'
-import Button from 'react-bootstrap/Button'
+
+import SearchForm from '../components/SearchForm/SearchForm'
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
@@ -32,9 +33,9 @@ describe('Basic layout', () => {
         expect(wrapper.find(Container)).toHaveLength(1)
     })
 
-    it('should render a form in the container', () => {
+    it('should render the SearchForm in the container', () => {
         const wrapper = shallow(<App />)
-        expect(wrapper.find(Form)).toHaveLength(1)
+        expect(wrapper.find(Container).find(SearchForm)).toHaveLength(1)
     })
 
     it('should render one row in the container', () => {
@@ -44,31 +45,6 @@ describe('Basic layout', () => {
     })
 })
 
-describe('Search Form', () => {
-    it('should render a form with input and button', () => {
-        const wrapper = shallow(<App />)
-        const form = wrapper.find(Form)
-        const formGroup = form.find(Form.Group)        
-
-        expect(formGroup).toHaveLength(1)
-
-        const inputGroup = formGroup.find(InputGroup)
-        expect(inputGroup).toHaveLength(1)
-
-        const input = inputGroup.find(Form.Control)
-        expect(input).toHaveLength(1)
-        expect(input.prop('type')).toBe('text')
-        expect(input.prop('placeholder')).toBe('Dish name')
-
-        const inputGroupAppend = inputGroup.find(InputGroup.Append)
-        expect(inputGroupAppend).toHaveLength(1)
-        
-        const button = inputGroupAppend.find(Button)
-        expect(button).toHaveLength(1)
-        expect(button.prop('type')).toBe('submit')
-
-    })
-})
 
 describe('Table', () => {
     it('should render a table', () => {
@@ -204,17 +180,14 @@ describe('Test sorting', () => {
 describe('Test searching', () => {
     it('should call the correct url with axios for searching', async () => {
         axios.get.mockResolvedValue({data: []})
-        let wrapper = mount(<App />)
-
-        const form = wrapper.find(Form)
-
-        const input = wrapper.find('input')
-        input.simulate('change', {target: {value: 'testsearch'}})
+        const searchValue = 'Test this awesome search'
 
         await act(async () => {
-            form.simulate('submit')
+            const wrapper = mount(<App />)    
+            const searchForm = wrapper.find(SearchForm)
+            searchForm.prop('handleSearch')(searchValue)
         })
-
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=&search=testsearch`)    
+        
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=&search=${searchValue}`)            
     })
 })
