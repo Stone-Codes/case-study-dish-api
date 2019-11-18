@@ -22,7 +22,7 @@ const TableHeader = ({displayName, sortName, sortedBy, handleSorting}) => {
   return (
     <th onClick={onChangeSorting}>
       {displayName} 
-      <FontAwesomeIcon icon={selectSortIcon()} />
+      <FontAwesomeIcon className="ml-2" icon={selectSortIcon()} />
     </th>
   )
 }
