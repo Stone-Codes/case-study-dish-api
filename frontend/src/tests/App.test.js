@@ -10,13 +10,13 @@ import App from '../components/App/App'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Table from 'react-bootstrap/Table'
-import Form from 'react-bootstrap/Form'
 
 import SearchForm from '../components/SearchForm/SearchForm'
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
+import TableHeader from '../components/TableHeader/TableHeader';
 
 Enzyme.configure({ adapter :new Adapter() })
 const {shallow, mount} = Enzyme
@@ -54,19 +54,11 @@ describe('Table', () => {
         expect(table).toHaveLength(1)
     })
 
-    it('should render correct table headers', () => {
+    it('should render two table headers', () => {
         const wrapper = shallow(<App />)
-        const header = wrapper.find(Table).find('thead')
+        const header = wrapper.find(TableHeader)
 
-        expect(header).toHaveLength(1)
-        
-        const headerRow = header.find('tr')
-        expect(headerRow).toHaveLength(1)
-
-        const headings = headerRow.find('th')
-        expect(headings).toHaveLength(2)
-        expect(headings.at(0).text()).toBe('Dish <FontAwesomeIcon />')
-        expect(headings.at(1).text()).toBe('Price <FontAwesomeIcon />')
+        expect(header).toHaveLength(2)
     })
 
     it('should render a table body', () =>{
@@ -110,40 +102,6 @@ describe('Fetching dishes', () => {
 }) 
 
 describe('Test sorting', () => {
-    it('should set the correct sort icon for dish name header', () => {
-        const wrapper = shallow(<App />)
-
-        const nameHeader = wrapper.find('th').at(0) 
-        const icon = nameHeader.find(FontAwesomeIcon)
-        
-        expect(icon.prop('icon')).toBe(faSort)
-        nameHeader.simulate('click')
-        waitForExpect(() => {
-            expect(icon.prop('icon')).toBe(faSortUp)
-        })
-        nameHeader.simulate('click')
-        waitForExpect(() => {
-            expect(icon.prop('icon')).toBe(faSortDown)
-        })        
-    })
-
-    it('should set the correct sort icon for price header', () => {
-        const wrapper = shallow(<App />)
-
-        const priceHeader = wrapper.find('th').at(1) 
-        const icon = priceHeader.find(FontAwesomeIcon)
-        
-        expect(icon.prop('icon')).toBe(faSort)
-        priceHeader.simulate('click')
-        waitForExpect(() => {
-            expect(icon.prop('icon')).toBe(faSortUp)
-        })
-        priceHeader.simulate('click')
-        waitForExpect(() => {
-            expect(icon.prop('icon')).toBe(faSortDown)
-        }) 
-    })
-
     it('should call the correct url with axios for sorting by name', async () => {
         axios.get.mockResolvedValue({data: []})
         const wrapper = mount(<App />)

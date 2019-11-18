@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button'
 
 
 Enzyme.configure({ adapter :new Adapter() })
-const {shallow, mount} = Enzyme
+const { shallow } = Enzyme
 
 describe('<SearchForm>', () => {
     it('should render a form with an input and a button', () => {
