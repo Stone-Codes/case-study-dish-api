@@ -7,10 +7,10 @@ services:
     ports: 
       - "8000:8000"
     environment: 
-     # set this environment variable to the url of the frontend to enable cors for this url
-       - FRONTEND_URL=http://localhost:80
-      # sets django debug mode to false
-       - DJANGO_DEBUG=False
+       # set this environment variable to the url of the frontend to enable cors for this url
+       - FRONTEND_URL=http://localhost
+       # set the allowed hosts for django
+       - DJANGO_ALLOWED_HOSTS=localhost
     command: >
       sh -c "python manage.py migrate && 
              python manage.py runserver 0.0.0.0:8000"
