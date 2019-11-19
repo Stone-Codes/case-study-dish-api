@@ -7,7 +7,8 @@ services:
     ports: 
       - "8000:8000"
     environment: 
-       - FRONTEND_URL=http://localhost:3000
+     # set this environment variable to the url of the frontend to enable cors for this url
+       - FRONTEND_URL=http://localhost:80
     command: >
       sh -c "python manage.py migrate && 
              python manage.py runserver 0.0.0.0:8000"
@@ -15,6 +16,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        - REACT_APP_API_URL=http://localhost:8000
     ports:
-      - "3000:3000"
-    command: sh -c "yarn start"
+      - "80:80"

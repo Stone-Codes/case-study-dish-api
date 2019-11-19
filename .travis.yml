@@ -10,7 +10,7 @@ before_script: pip install docker-compose
 jobs:
   include:
     - stage: "Test-Backend"
-      script: docker-compose run backend sh -c "python manage.py test"
+      script: docker-compose -f docker-compose.yml -f docker-compose.test.yml run backend
 
     - stage: "Test-Frontend"
-      script: docker-compose run frontend sh -c "CI=true yarn test"
+      script: docker-compose -f docker-compose-yml -f docker-compose.testyml run frontend
