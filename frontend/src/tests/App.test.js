@@ -110,7 +110,7 @@ describe('Test sorting', () => {
             const tableHeader = wrapper.find(TableHeader).at(0)
             tableHeader.prop('handleSorting')(sortBy)
         })
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=${sortBy}&search=`)
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes/?ordering=${sortBy}&search=`)
     })
 })
 
@@ -125,6 +125,6 @@ describe('Test searching', () => {
             searchForm.prop('handleSearch')(searchValue)
         })
         
-        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes?ordering=&search=${searchValue}`)            
+        expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes/?ordering=&search=${searchValue}`)            
     })
 })
