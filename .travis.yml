@@ -13,4 +13,4 @@ jobs:
       script: docker-compose -f docker-compose.yml -f docker-compose.test.yml run backend
 
     - stage: "Test-Frontend"
-      script: docker-compose -f docker-compose-yml -f docker-compose.testyml run frontend
+      script: docker-compose -f docker-compose.yml -f docker-compose.testyml run frontend
