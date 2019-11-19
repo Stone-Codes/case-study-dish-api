@@ -31,7 +31,7 @@ const App = () => {
       } else if (e.request) {
         setErrorMessage('The server didnt respond')
       } else {
-        setErrorMessage('There was an error sending your request to the server')
+        setErrorMessage('There was an error setting up your request')
       }
     })
   }, [sorting, search])

@@ -12,11 +12,8 @@ import Row from 'react-bootstrap/Row'
 import Table from 'react-bootstrap/Table'
 
 import SearchForm from '../components/SearchForm/SearchForm'
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 import TableHeader from '../components/TableHeader/TableHeader';
+import ErrorModal from '../components/ErrorModal/ErrorModal'
 
 Enzyme.configure({ adapter :new Adapter() })
 const {shallow, mount} = Enzyme
@@ -126,5 +123,46 @@ describe('Test searching', () => {
         })
         
         expect(axios.get).lastCalledWith(`${process.env.REACT_APP_API_URL}/api/dishes/?ordering=&search=${searchValue}`)            
+    })
+})
+
+describe('Test axios error handling', () => {
+    it('should open the error modal with the correct error message for a server error', async () => {
+        axios.get.mockRejectedValue({response: {status: 500}})
+        let wrapper
+        await act(async () => {
+            wrapper = mount(<App />)            
+        })
+        wrapper.update()
+
+        const errorModal = wrapper.find(ErrorModal)     
+        expect(errorModal.prop('show')).toBeTruthy()
+        expect(errorModal.prop('errorMessage')).toBe('The server had a problem completing your request')                     
+    })
+
+    it('should open the error modal with the correct error message for a request error', async() => {
+        axios.get.mockRejectedValue({request: {}})
+        let wrapper
+        await act(async () => {
+            wrapper = mount(<App />)
+        })
+        wrapper.update()
+
+        const errorModal = wrapper.find(ErrorModal)
+        expect(errorModal.prop('show')).toBeTruthy()
+        expect(errorModal.prop('errorMessage')).toBe('The server didnt respond')                
+    })
+
+    it('should open the error modal with the correct error message for every other error', async () => {
+        axios.get.mockRejectedValue({})
+        let wrapper
+        await act(async () => {
+            wrapper = mount(<App />)
+        })
+        wrapper.update()
+
+        const errorModal = wrapper.find(ErrorModal)
+        expect(errorModal.prop('show')).toBeTruthy()
+        expect(errorModal.prop('errorMessage')).toBe('There was an error setting up your request') 
     })
 })
