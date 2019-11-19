@@ -5,8 +5,7 @@ services:
     volumes: 
       - ./backend/app:/app
     command: >
-      sh -c "python manage.py migrate && 
-             python manage.py test"
+      sh -c "python manage.py test"
 
   frontend:
     build:
