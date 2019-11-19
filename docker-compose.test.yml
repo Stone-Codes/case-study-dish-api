@@ -17,6 +17,4 @@ services:
     environment: 
       # sets the url of the backend
       -  REACT_APP_API_URL=http://localhost:8000
-    volumes:
-      - ./frontend:/app
     command: sh -c "CI=true yarn test"
