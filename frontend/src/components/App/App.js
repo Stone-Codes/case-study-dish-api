@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import axios from 'axios'
 
 import Container from 'react-bootstrap/Container'
@@ -8,19 +9,30 @@ import Table from 'react-bootstrap/Table'
 
 import SearchForm from '../SearchForm/SearchForm';
 import TableHeader from '../TableHeader/TableHeader';
+import ErrorModal from '../ErrorModal/ErrorModal'
 
-function App() {
+const App = () => {
 
   const [dishes, setDishes] = useState([])
   const [sorting, setSorting] = useState('')
   const [search, setSearch] = useState('')
+
+  const [showErrorModal, setShowErrorModal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/dishes/?ordering=${sorting}&search=${search}`)
     .then(response => {
       setDishes(response.data)
     }).catch(e => {
-      console.log(e)
+      setShowErrorModal(true)
+      if(e.response) {
+        setErrorMessage('The server had a problem completing your request')
+      } else if (e.request) {
+        setErrorMessage('The server didnt respond')
+      } else {
+        setErrorMessage('There was an error sending your request to the server')
+      }
     })
   }, [sorting, search])
 
@@ -33,8 +45,14 @@ function App() {
     setSearch(dishName)
   }
 
+  const handleCloseErrorModal = () => {
+    setShowErrorModal(false)
+    setErrorMessage('')
+  }
+
   return (
     <Container>
+      <ErrorModal show={showErrorModal} handleClose={handleCloseErrorModal} errorMessage={errorMessage} />
       <SearchForm handleSearch={handleSearch} />
       <Row>
         <Col>
@@ -60,4 +78,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
