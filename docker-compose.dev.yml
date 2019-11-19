@@ -7,6 +7,8 @@ services:
     environment: 
       # set this environment variable to the url of the frontend to enable cors for this url
       - FRONTEND_URL=http://localhost:3000
+      # sets django debug mode to true      
+      - DJANGO_DEBUG=True
     ports:
       - "8000:8000"
     command: >
@@ -17,6 +19,7 @@ services:
     volumes:
       - ./frontend:/app
     environment: 
+      # sets the url of the backend
       -  REACT_APP_API_URL=http://localhost:8000
     ports:
       - "3000:3000"

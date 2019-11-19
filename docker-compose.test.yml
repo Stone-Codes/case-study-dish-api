@@ -4,6 +4,9 @@ services:
   backend:
     volumes: 
       - ./backend/app:/app
+    environment:
+      # sets django debug mode to true 
+      - DJANGO_DEBUG=True
     command: >
       sh -c "python manage.py test"
 
@@ -12,6 +15,7 @@ services:
       context: ./frontend
       dockerfile: dev.Dockerfile
     environment: 
+      # sets the url of the backend
       -  REACT_APP_API_URL=http://localhost:8000
     volumes:
       - ./frontend:/app
