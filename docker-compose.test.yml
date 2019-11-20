@@ -7,8 +7,7 @@ services:
     environment:
       # sets django debug mode to true 
       - DJANGO_DEBUG=True
-    command: >
-      sh -c "python manage.py test"
+    command: "test"
 
   frontend:
     build:

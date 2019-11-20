@@ -12,3 +12,8 @@ RUN pip install pipenv
 RUN pipenv install --system --deploy --ignore-pipfile
 
 COPY ./app /app
+
+COPY /docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["start"]
