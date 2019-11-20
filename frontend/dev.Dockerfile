@@ -10,3 +10,8 @@ RUN yarn install
 
 COPY ./src /app/src
 COPY ./public /app/public
+
+COPY /docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["start"]
